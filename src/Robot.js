@@ -1,41 +1,38 @@
 /* 
-* A ROBOT!
+* ROBOT.
 *
-* you can call it like this:
+*  This module lets you make robots like so:
 *
-*    var Robot = require('src/Robot');
+*    var Robots = require('./src/Robots');
 *    
-*    var aRobot = Robot(grid, startX, startY, initialBearing);
-*    robot.processInstructions(instructionString).position();
+*    var MisterGutsy = Robots.Robot(grid, startX, startY, initialBearing);
 *    
-* 
+*    MisterGutsy.processInstructions(instructionString).position();
+*    
 */ 
 
+// pass args as options would be nicer
 exports.Robot = function(grid, startX, startY, initialBearing) {
 
   // private stuff, defaults
-  var x = (startX >= 0) ? startX : 0;
-  var y = (startY >= 0) ? startY : 0;
+  var x = (startX > 0) ? startX : 0;
+  var y = (startY > 0) ? startY : 0;
   var grid = grid;
   var bearing = (initialBearing) || 'N';
   var lost = false;
 
-  // we store these here so it's easier to turn
-  // instead of having tons of ifs!
-  var turn = {
-    left  :  {'N':'W', 'W':'S', 'S':'E', 'E':'N'},
-    right :  {'N':'E', 'E':'S', 'S':'W', 'W':'N'}
-  };
-
   // the robot
-  var robot = {}
+  var robot = {};
     
-  // process the instructions
-  // assume they come as a string
+  // parse the instructions string
+  //   "parse"
   robot.processInstructions = function(instructions) {
+    
     if (instructions.length > 100) 
       throw new Error("Max instruction length exceeded (100/" + instructions.length +")");
+    
     var list = instructions.split('')
+
     list.forEach(function(instruction) {
 
       if (instruction === 'F') 
@@ -45,17 +42,18 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
       if (instruction === 'R') 
         return robot.turnRight();
 
-      // oops! wrong instruction
+      // wrong instruction
       throw new Error("I didn't understand your instruction " + instruction, list); 
 
     });
+
     return robot;
 
   };
 
 
   // move the robot one step forward in the
-  // direction we're facing currently
+  // direction we're currently facing
   robot.moveForward = function() {
     // we don't move if we're lost
     if (lost)
@@ -78,35 +76,44 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
         x--;
       
       return true;
-
+      
     } else { 
 
+      // we couldn't move
       // so we're lost
       lost = true;
       // but we leave a scent
-      grid.addScent(x, y, facing);
+      grid.addScent(x, y, bearing);
 
       return false;
     }
 
-  }
+  };
+
+  // turning map
+  var turn = {
+    left  :  {'N':'W', 'W':'S', 'S':'E', 'E':'N'},
+    right :  {'N':'E', 'E':'S', 'S':'W', 'W':'N'}
+  };
 
   robot.turnLeft = function() {
-    if (!lost) bearing = turn.left[bearing]
-  }
+    if (!lost) bearing = turn.left[bearing];
+    return robot;
+  };
 
   robot.turnRight = function() {
-    if (!lost) bearing = turn.right[bearing]
-  }
+    if (!lost) bearing = turn.right[bearing];
+    return robot;
+  };
 
   robot.position = function() {
     return  {
       x : x,
       y : y,
-      bearing : bearing
+      bearing : bearing,
       lost : lost
     };
-  }
+  };
 
   return robot;
 
