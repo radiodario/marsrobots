@@ -1,0 +1,9 @@
+{
+  "name" : "marsrobots",
+  "version" : "0.0.1",
+  "author" : "radiodario <dario.villanueva@gmail.com>",
+  "devDependencies" : {
+    "chai" : "*",
+    "mocha" : "*"
+  }
+}
