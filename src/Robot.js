@@ -47,7 +47,10 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
 
     });
 
-    return robot;
+    var l = lost ? 'LOST' : '';
+    var result = x + ' ' + y + ' ' + bearing + ' ' + l;
+
+    return result;
 
   };
 
@@ -75,8 +78,10 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
       if (bearing === 'W')
         x--;
       
+      console.log(robot.position());
+
       return true;
-      
+
     } else { 
 
       // we couldn't move
@@ -106,6 +111,33 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
     return robot;
   };
 
+
+  // get/setters
+
+  robot.x = function(_) {
+    if (!arguments.length) return x;
+    x = _;
+    return robot;
+  };
+
+  robot.y = function(_) {
+    if (!arguments.length) return y;
+    y = _;
+    return robot;
+  };
+
+  robot.lost = function(_) {
+    if (!arguments.length) return lost;
+    return lost;
+  }
+
+  robot.bearing = function(_) {
+    if (!arguments.length) return bearing;
+    bearing = _;
+    return robot;
+  };
+
+  // a nice object with the pos.
   robot.position = function() {
     return  {
       x : x,

@@ -83,6 +83,8 @@ describe('Robot', function() {
       //this.robot.processInstructions(instructions).should.throw();
     });
     it('should follow some strings ok', function() {
+      // use the grid from the questions
+      this.grid = Grids.Grid(5, 3);
       // make a local copy of the robot
       // for map's callback
       var robot = this.robot;
@@ -90,24 +92,88 @@ describe('Robot', function() {
       [
         {
           i : 'LRFLRF', // instruction string
+          r : { // start pos
+            x : 0,
+            y : 0,
+            b : 'N'
+          },
           d : { // expected destination
             x : 0, 
             y : 2,
             b : 'N',
             l : false
           }
+        },
+        {
+          i : 'RFRFRFRF',
+          r : { // start pos
+            x : 1,
+            y : 1,
+            b : 'E'
+          },
+          d : {
+            x : 1,
+            y : 1,
+            b : 'E',
+            l : false
+          } 
+        },
+        {
+          i : 'FRRFLLFFRRFLL',
+          r : { // start pos
+            x : 3,
+            y : 2,
+            b : 'N'
+          },
+          d : {
+            x : 3,
+            y : 3,
+            b : 'N',
+            l : true
+          } 
+        },
+        {
+          i : 'LLFFFLFLFL',
+          r : {
+            x : 0,
+            y : 3,
+            b : 'W' 
+          },
+          d : {
+            x : 2,
+            y : 3,
+            b : 'S',
+            l : false
+          }
         }
       /*
           add more strings here
+          3 2 N 
+          FRRFLLFFRRFLL
+
+          0 3 W 
+          LLFFFLFLFL
+
+          Sample Output
+          1 1 E
+          3 3 N LOST
+          2 3 S
       */
       ].map(function(instruction) {
+        // console.log(instruction.i)
+        // reset the robot
+        robot.x(instruction.r.x);
+        robot.y(instruction.r.y);
+        robot.bearing(instruction.r.b);
+        robot.lost(false);
+
+        // 
         robot.processInstructions(instruction.i);
         robot.position().x.should.equal(instruction.d.x);
         robot.position().y.should.equal(instruction.d.y);
         robot.position().bearing.should.equal(instruction.d.b);
         robot.position().lost.should.equal(instruction.d.l);
       });
-
     });
   });
 });
@@ -115,7 +181,6 @@ describe('Robot', function() {
 
 // Grid represents mars
 describe('Grid', function() {
-  //???
   it('should have robot scents when one moves off the edge');
 });
 
