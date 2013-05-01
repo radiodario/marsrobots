@@ -1,43 +1,62 @@
-var Robots = require('./src/Robot');
-var Grids = require('./src/Grid');
+// for reading files
+var fs = require('fs');
+
+// the command module
+var Command = require('./src/Command');
+
+// reads the prompt interactively
+// and parses the commands one at a time
+function interactivePrompt() {
+  var stdin  = process.stdin;
+  var stdout = process.stdout;
+
+  // clear the console
+  stdout.write('\033[2J\033[0;0H');
+  
+  // show the mars landscape
+  marsScape = fs.readFileSync('marsScape.txt').toString()
+  stdout.write('Welcome to Mars Control\n');
+  stdout.write(marsScape);
+  stdout.write('\nInteractive Prompt - Please issue a command\n');
+  stdout.write('ctrl-c to exit\n');
+
+  // a prompt
+  stdout.write('> ')
+  // wait for input
+  stdin.resume();
 
 
-var grid = null;
-var robot = null;
+  // put a listener on data
+  stdin.on('data', function(data) {
+    data = data.toString().trim();
 
+    Command.parseCommand(data, true); // we pass true here cos it's interactive
 
-function issueCommand(command) {
+    stdout.write('> ');
 
-};
-
-function parseCommand(command) {
-  var regexps = {
-    grid         : /^(\d{1,2})\s(\d{1,2})\s*$/,
-    robotPlace   : /^(\d{1,2})\s(\d{1,2})\s([NSEW])\s*$/,
-    robotCommand : /^[LRF]+\s*$/
-  };
-
-  // a grid sizing command
-  if (regexps.grid.test(command)) {
-
-    gridSize = command.match(regexps.grid);
-    grid = new Grid(gridSize[1], gridSize[2]);
-    
-  }
-
-  // a robot placement command
-  if (regexps.robotPlace.test(command)) {
-    
-    parts = command.match(regexps.robotPlace);
-    robot = new Robot(grid, parts[1], parts[2], parts[3]);
-
-  }
-
-  // a robot movement command
-  if (regexps.robotCommand.test(command)) {
-
-    console.log(robot.processInstructions(command))
-
-  }
+  })
 
 };
+
+
+// processes a file with commands
+function processFile(filename) {
+  try {
+    commands = fs.readFileSync(filename, 'utf8').toString().split('\n');
+    commands.forEach(function(command) {
+      Command.parseCommand(command);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+// here's the run
+if (process.argv.length === 2) {
+  interactivePrompt()
+} else {
+  fileName = process.argv[2]; // assume it's the third argument
+  processFile(fileName)
+}
+
