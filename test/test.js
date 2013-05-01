@@ -23,7 +23,7 @@ describe('Grid', function() {
     this.grid.canMove(5,3,'S').should.equal.false;
     this.grid.canMove(5,3,'E').should.equal.false;
     this.grid.canMove(3,3,'N').should.equal.false;
-    
+  
   })
 });
 
@@ -182,12 +182,8 @@ describe('Robot', function() {
 });
 
 
-describe('Control', function() {
-  it('should read instructions correctly');
-  it('should output instructions correctly');
-  it('should output LOST if a robot is lost');
-  it('should reject instruction strings longer than 100 chars');
-  it('should reject grid sizes larger than 50');
-  it('should reject coordinates larger than 50');
-  it('should process robots sequentialy');
-});
+
+
+
+
+
