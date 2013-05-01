@@ -12,18 +12,23 @@ describe('Grid', function() {
   beforeEach(function() {
     this.grid = Grids.Grid(5,3);
   })
-  it('should have robot scents when one moves off the edge');
+  it('should have robot scents when one moves off the edge', function() {
+    this.robot = Robots.Robot(this.grid, 5, 3, 'N');
+    this.robot.moveForward();
+    this.grid.lostHere(5, 3, 'N').should.be.true;
+    this.grid.lostHere(0, 0, 'N').should.be.false;
+  });
   it('should tell you if you can move successfully', function() {
-    this.grid.canMove(0,0,'S').should.equal.false;
-    this.grid.canMove(0,0,'E').should.equal.false;
-    this.grid.canMove(0,0,'N').should.equal.true;
-    this.grid.canMove(0,0,'W').should.equal.true;
-    this.grid.canMove(5,3,'N').should.equal.false;
-    this.grid.canMove(5,3,'W').should.equal.false;
-    this.grid.canMove(5,3,'S').should.equal.false;
-    this.grid.canMove(5,3,'E').should.equal.false;
-    this.grid.canMove(3,3,'N').should.equal.false;
-  
+    // bottom left
+    this.grid.canMove(0,0,'S').should.be.false;
+    this.grid.canMove(0,0,'E').should.be.true;
+    this.grid.canMove(0,0,'N').should.be.true;
+    this.grid.canMove(0,0,'W').should.be.false;
+    // top right
+    this.grid.canMove(5,3,'N').should.be.false;
+    this.grid.canMove(5,3,'W').should.be.true;
+    this.grid.canMove(5,3,'S').should.be.true;
+    this.grid.canMove(5,3,'E').should.be.false;
   })
 });
 
