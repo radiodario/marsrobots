@@ -17,5 +17,6 @@ you can issue commands to the robot control system:
 run `node mars commands.mars`
 
 ## running tests
-`npm install`
-`mocha -R nyan`
+```
+npm install && mocha -R nyan
+```
