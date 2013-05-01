@@ -41,7 +41,7 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
         return robot.turnLeft();
       if (instruction === 'R') 
         return robot.turnRight();
-
+    
       // wrong instruction
       throw new Error("I didn't understand your instruction " + instruction, list); 
 
@@ -58,6 +58,7 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
   // move the robot one step forward in the
   // direction we're currently facing
   robot.moveForward = function() {
+
     // we don't move if we're lost
     if (lost)
       return null; // don't move
@@ -77,13 +78,10 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
         x++;
       if (bearing === 'W')
         x--;
-      
-      console.log(robot.position());
 
       return true;
 
     } else { 
-
       // we couldn't move
       // so we're lost
       lost = true;

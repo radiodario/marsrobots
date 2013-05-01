@@ -3,8 +3,8 @@
 *
 * you can call it like this:
 *
-*    var Grid = require('src/Grid');
-*    var mars = Grid(maxX, maxY);
+*    var Grids = require('src/Grid');
+*    var mars = Grids.Grid(maxX, maxY);
 *    
 */
 
@@ -31,6 +31,7 @@ exports.Grid = function(maxX, maxY) {
   };
 
   grid.canMove = function(x, y, bearing) {
+
     // edge cases
     if (x < 0)
       return false

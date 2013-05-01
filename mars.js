@@ -18,13 +18,26 @@ function parseCommand(command) {
   };
 
   // a grid sizing command
-  if (regexps.grid.test(command))
-    gridSize = command.match(regexps.grid)
-    grid = new Grid(gridSize[0], gridSize[1]);
+  if (regexps.grid.test(command)) {
 
+    gridSize = command.match(regexps.grid);
+    grid = new Grid(gridSize[1], gridSize[2]);
+    
+  }
 
-  if (regexps.robotPlace.test(command))
-    parts§ = command.split
-    robot = new Robot(grid, )
+  // a robot placement command
+  if (regexps.robotPlace.test(command)) {
+    
+    parts = command.match(regexps.robotPlace);
+    robot = new Robot(grid, parts[1], parts[2], parts[3]);
+
+  }
+
+  // a robot movement command
+  if (regexps.robotCommand.test(command)) {
+
+    console.log(robot.processInstructions(command))
+
+  }
 
 };

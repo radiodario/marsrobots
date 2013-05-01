@@ -7,6 +7,26 @@ var Robots = require('../src/Robot')
 var Grids = require('../src/Grid')
 
 
+// Grid represents the planet
+describe('Grid', function() {
+  beforeEach(function() {
+    this.grid = Grids.Grid(5,3);
+  })
+  it('should have robot scents when one moves off the edge');
+  it('should tell you if you can move successfully', function() {
+    this.grid.canMove(0,0,'S').should.equal.false;
+    this.grid.canMove(0,0,'E').should.equal.false;
+    this.grid.canMove(0,0,'N').should.equal.true;
+    this.grid.canMove(0,0,'W').should.equal.true;
+    this.grid.canMove(5,3,'N').should.equal.false;
+    this.grid.canMove(5,3,'W').should.equal.false;
+    this.grid.canMove(5,3,'S').should.equal.false;
+    this.grid.canMove(5,3,'E').should.equal.false;
+    this.grid.canMove(3,3,'N').should.equal.false;
+    
+  })
+});
+
 
 describe('Robot', function() {
   beforeEach(function() {
@@ -84,7 +104,7 @@ describe('Robot', function() {
     });
     it('should follow some strings ok', function() {
       // use the grid from the questions
-      this.grid = Grids.Grid(5, 3);
+      var grid = Grids.Grid(5, 3);
       // make a local copy of the robot
       // for map's callback
       var robot = this.robot;
@@ -146,42 +166,19 @@ describe('Robot', function() {
             l : false
           }
         }
-      /*
-          add more strings here
-          3 2 N 
-          FRRFLLFFRRFLL
-
-          0 3 W 
-          LLFFFLFLFL
-
-          Sample Output
-          1 1 E
-          3 3 N LOST
-          2 3 S
-      */
-      ].map(function(instruction) {
-        // console.log(instruction.i)
+      ].map(function(test) {
         // reset the robot
-        robot.x(instruction.r.x);
-        robot.y(instruction.r.y);
-        robot.bearing(instruction.r.b);
-        robot.lost(false);
-
+        var r = test.r;
+        robot = Robots.Robot(grid, r.x, r.y, r.b);
         // 
-        robot.processInstructions(instruction.i);
-        robot.position().x.should.equal(instruction.d.x);
-        robot.position().y.should.equal(instruction.d.y);
-        robot.position().bearing.should.equal(instruction.d.b);
-        robot.position().lost.should.equal(instruction.d.l);
+        robot.processInstructions(test.i);
+        robot.position().x.should.equal(test.d.x);
+        robot.position().y.should.equal(test.d.y);
+        robot.position().bearing.should.equal(test.d.b);
+        robot.position().lost.should.equal(test.d.l);
       });
     });
   });
-});
-
-
-// Grid represents mars
-describe('Grid', function() {
-  it('should have robot scents when one moves off the edge');
 });
 
 
