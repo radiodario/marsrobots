@@ -3,7 +3,7 @@
 *
 * you can call it like this:
 *
-*    var Grids = require('src/Grid');
+*    var Grids = require('./src/Grid');
 *    var mars = Grids.Grid(maxX, maxY);
 *    
 */

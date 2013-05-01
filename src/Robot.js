@@ -3,7 +3,7 @@
 *
 *  This module lets you make robots like so:
 *
-*    var Robots = require('./src/Robots');
+*    var Robots = require('./src/Robot');
 *    
 *    var MisterGutsy = Robots.Robot(grid, startX, startY, initialBearing);
 *    
