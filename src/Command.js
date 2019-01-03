@@ -107,7 +107,14 @@ const rm = '┤'
 const tm = '┬'
 const bm = '┴'
 const emp = ' '
-const rbt = '╳';
+const lst = '╳';
+
+const dirs = {
+  N: '↑',
+  S: '↓',
+  E: '→',
+  W: '←',
+}
 
 const drawWorld = () => {
   // draw the top
@@ -188,7 +195,7 @@ const drawWorld = () => {
     pos.x,
     pos.y
   );
-  const robotChar = pos.lost ? rbt : pos.bearing
+  const robotChar = pos.lost ? lst : dirs[pos.bearing]
   world = world.substring(0, robotPos) + robotChar + world.substring(robotPos + 1)
   console.log(world)
 }
