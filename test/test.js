@@ -110,10 +110,10 @@ describe('Robot', function() {
     });
     it('should follow some strings ok', function() {
       // use the grid from the questions
-      var grid = Grid(5, 3);
+      const grid = Grid(5, 3);
       // make a local copy of the robot
       // for map's callback
-      var robot = this.robot;
+      let robot = this.robot;
       // a list with instructions
       [
         {
@@ -174,7 +174,7 @@ describe('Robot', function() {
         }
       ].map(function(test) {
         // reset the robot
-        var r = test.r;
+        const r = test.r;
         robot = Robot(grid, r.x, r.y, r.b);
         //
         robot.processInstructions(test.i);
@@ -218,21 +218,11 @@ describe('Command', () => {
     robot.position().lost.should.equal(false)
   })
   it('should have a `drawWorld` function', () => {
-    Command.drawWorld();
-    Command.reset()
-    Command.parse('5 5')
-    Command.parse('1 3 E')
     Command.drawWorld.should.be.a('function');
     Command.drawWorld();
-    Command.reset()
-    Command.parse('5 10')
-    Command.parse('0 0 E')
-    Command.drawWorld.should.be.a('function');
-    Command.drawWorld();
-
   })
   it('should have a `reset` function', () => {
-    Command.parse.should.be.a('function');
+    Command.reset.should.be.a('function');
   });
   it('should reset the grid after callingg reset', () => {
     const { robot, grid } = Command.reset()

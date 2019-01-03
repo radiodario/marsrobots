@@ -1,11 +1,11 @@
 /*
 * COMMAND.
 *
-*  This module has just one function that parses commands:
+*  This module parses commands and allows for drawing the world:
 *
-*    var Command = require('./src/Command');
+*    const Command = require('./src/Command');
 *
-*    Command.parseComand('LRLRLR', true);
+*    Command.parse('LRLRLR', true);
 */
 
 // load the other modules
@@ -36,11 +36,11 @@ const parse = (command, interactive) => {
   if (regexps.grid.test(command)) {
     try {
       gridSize = command.match(regexps.grid);
-      const width = parseInt(gridSize[1], 10)
-      const height = parseInt(gridSize[2], 10)
-      grid = Grid(width, height);
+      const maxX = parseInt(gridSize[1], 10)
+      const maxY = parseInt(gridSize[2], 10)
+      grid = Grid(maxX, maxY);
       if (interactive) {
-        console.log(`Grid of ${width} by ${height} created`);
+        console.log(`Grid of ${maxX + 1} by ${maxY + 1} created`);
         drawWorld()
       }
     } catch (e) {

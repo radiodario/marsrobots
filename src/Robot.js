@@ -3,9 +3,9 @@
 *
 *  This module lets you make robots like so:
 *
-*    var Robots = require('./src/Robot');
+*    const Robot = require('./src/Robot');
 *
-*    var MisterGutsy = Robots.Robot(grid, startX, startY, initialBearing);
+*    const MisterGutsy = Robot(grid, startX, startY, initialBearing);
 *
 *    MisterGutsy.processInstructions(instructionString).position();
 *
@@ -27,7 +27,7 @@ const Robot = (grid, x = 0, y = 0, initialBearing = 'N') => {
     if (instructions.length > 100)
       throw new Error("Max instruction length exceeded (100/" + instructions.length +")");
 
-    var list = instructions.split('')
+    const list = instructions.split('')
 
     list.forEach(function(instruction) {
 
@@ -43,11 +43,9 @@ const Robot = (grid, x = 0, y = 0, initialBearing = 'N') => {
 
     });
 
-    var l = lost ? 'LOST' : '';
-    var result = x + ' ' + y + ' ' + bearing + ' ' + l;
+    const result = `${x} ${y} ${bearing}${lost ? ' LOST' : ''}`;
 
     return result;
-
   };
 
 
@@ -90,7 +88,7 @@ const Robot = (grid, x = 0, y = 0, initialBearing = 'N') => {
   };
 
   // turning map
-  var turn = {
+  const turn = {
     left  :  {'N':'W', 'W':'S', 'S':'E', 'E':'N'},
     right :  {'N':'E', 'E':'S', 'S':'W', 'W':'N'}
   };

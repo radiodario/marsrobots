@@ -3,8 +3,8 @@
 *
 * you can call it like this:
 *
-*    var Grids = require('./src/Grid');
-*    var mars = Grids.Grid(maxX, maxY);
+*    const Grid = require('./src/Grid');
+*    const mars = Grid(maxX, maxY);
 *
 */
 

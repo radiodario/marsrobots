@@ -1,14 +1,14 @@
 // for reading files
-var fs = require('fs');
+const fs = require('fs');
 
 // the command module
-var Command = require('./src/Command');
+const Command = require('./src/Command');
 
 // reads the prompt interactively
 // and parses the commands one at a time
 function interactivePrompt() {
-  var stdin  = process.stdin;
-  var stdout = process.stdout;
+  const stdin  = process.stdin;
+  const stdout = process.stdout;
 
   // clear the console
   stdout.write('\033[2J\033[0;0H');
