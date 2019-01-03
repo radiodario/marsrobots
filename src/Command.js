@@ -39,7 +39,10 @@ const parse = (command, interactive) => {
       const width = parseInt(gridSize[1], 10)
       const height = parseInt(gridSize[2], 10)
       grid = Grid(width, height);
-      if (interactive) console.log('Grid', gridSize[1], 'x', gridSize[2], 'created');
+      if (interactive) {
+        console.log(`Grid of ${width} by ${height} created`);
+        drawWorld()
+      }
     } catch (e) {
       console.error(e.toString())
     }
@@ -57,7 +60,10 @@ const parse = (command, interactive) => {
         const y = parseInt(parts[2], 10)
         const bearing = parts[3]
         robot = Robot(grid, x, y, bearing);
-        if (interactive) console.log('Robot OK');
+        if (interactive) {
+          drawWorld()
+          console.log(`Robot deployed at (${x},${y}) bearing ${bearing}`);
+        }
       } catch (e) {
         console.error(e.toString())
       }
@@ -73,6 +79,9 @@ const parse = (command, interactive) => {
       console.error('Error - you must set up a robot first')
     } else {
       console.log(robot.processInstructions(command))
+      if (interactive) {
+        drawWorld()
+      }
     }
     return { robot, grid }
   }
@@ -86,4 +95,102 @@ const reset = () => {
   return { robot, grid }
 }
 
-module.exports = { parse, reset }
+const hor = '─'
+const ver = '│'
+const ltc = '┌'
+const rtc = '┐'
+const lbc = '└'
+const rbc = '┘'
+const mid = '┼'
+const lm = '├'
+const rm = '┤'
+const tm = '┬'
+const bm = '┴'
+const emp = ' '
+const rbt = '╳';
+
+const drawWorld = () => {
+  // draw the top
+  let world = ''
+
+  const drawTopRow = (width) => {
+    let row = ltc;
+    for (let i = 0; i < width; i++) {
+      row += hor;
+      if (i !== width -1) row += tm
+    }
+
+    row += rtc + '\n'
+    return row
+  }
+
+  const drawBottomRow = (width) => {
+    let row = lbc;
+    for (let i = 0; i < width; i++) {
+      row += hor
+      if (i !== width -1) row += bm
+    }
+
+    row += rbc + '\n'
+    return row
+  }
+
+  const drawMidRow = (width) => {
+    let row = lm;
+    for (let i = 0; i < width; i++) {
+      row += hor
+      if (i !== width - 1) row += mid
+    }
+
+    row += rm
+    return row + '\n'
+  }
+
+  const drawRow = (width) => {
+    let row = ver
+    for (let i = 0; i < width; i++) {
+      row += emp
+      row += ver
+    }
+    return row + '\n'
+  }
+
+  const width = grid.maxX + 1;
+  const height = grid.maxY + 1;
+
+  world += drawTopRow(width)
+  for (let i = 0; i < height; i++) {
+    world += drawRow(width)
+    if (i !== height - 1)
+      world += drawMidRow(width)
+    else
+      world += drawBottomRow(width)
+  }
+
+  // translate xy to string pos
+  const strpos = (w, h, x, y) => {
+    // flip the y axis
+    y = Math.abs(y - (h - 1))
+    const charsPerRow = (1 + w) * 2
+    return ((x * 2) + 1) + (charsPerRow * ((y * 2) + 1))
+  }
+
+  if (!robot) {
+    console.log(world)
+    return;
+  }
+  let pos = robot.position();
+  console.log(`{x:${pos.x}, y:${pos.y}}`)
+
+  const robotPos = strpos(
+    width,
+    height,
+    pos.x,
+    pos.y
+  );
+  const robotChar = pos.lost ? rbt : pos.bearing
+  world = world.substring(0, robotPos) + robotChar + world.substring(robotPos + 1)
+  console.log(world)
+}
+
+module.exports = { parse, reset, drawWorld }

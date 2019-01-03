@@ -8,16 +8,16 @@
 *
 */
 
-const Grid = (width, height) => {
+const Grid = (maxX, maxY) => {
   // make sure there's an error thrown if you ask
   // for a planet that's too big
-  if ((height > 50) || (width > 50))
+  if ((maxY > 50) || (maxX > 50))
     throw new Error("Sorry sir, we can only simulate planets of 50x50")
 
   // scents contains a bunch of positions where
   var scents = [];
 
-  var grid = { height, width, scents };
+  var grid = { maxY, maxX, scents };
 
   grid.lostHere = function(x, y, bearing) {
     var currentPos = x + ',' + y + ',' + bearing;
@@ -34,21 +34,21 @@ const Grid = (width, height) => {
     // edge cases
     if (x < 0)
       return false
-    if (x > width)
+    if (x > maxX)
       return false
     if (y < 0)
       return false
-    if (y > height)
+    if (y > maxY)
       return false
 
     // normal checks
     switch (bearing) {
       case 'N':
-        return (y < height);
+        return (y < maxY);
       case 'S':
         return (y > 0);
       case 'E':
-        return (x < width);
+        return (x < maxX);
       case 'W':
         return (x > 0);
       default:

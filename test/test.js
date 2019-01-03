@@ -199,9 +199,9 @@ describe('Command', () => {
     outcome.should.equal(true)
   })
   it('should parse a grid building command', () => {
-    const { robot, grid } = Command.parse('5 3')
-    grid.height.should.equal(3)
-    grid.width.should.equal(5)
+    const { robot, grid } = Command.parse('5 5')
+    grid.maxX.should.equal(5)
+    grid.maxY.should.equal(5)
   });
   it('parses a robot placement command', () => {
     const { robot, grid } = Command.parse('1 1 E')
@@ -216,6 +216,20 @@ describe('Command', () => {
     robot.position().y.should.equal(1)
     robot.position().bearing.should.equal('E')
     robot.position().lost.should.equal(false)
+  })
+  it('should have a `drawWorld` function', () => {
+    Command.drawWorld();
+    Command.reset()
+    Command.parse('5 5')
+    Command.parse('1 3 E')
+    Command.drawWorld.should.be.a('function');
+    Command.drawWorld();
+    Command.reset()
+    Command.parse('5 10')
+    Command.parse('0 0 E')
+    Command.drawWorld.should.be.a('function');
+    Command.drawWorld();
+
   })
   it('should have a `reset` function', () => {
     Command.parse.should.be.a('function');
