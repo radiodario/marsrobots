@@ -12,7 +12,7 @@ function interactivePrompt() {
 
   // clear the console
   stdout.write('\033[2J\033[0;0H');
-  
+
   // show the mars landscape
   marsScape = fs.readFileSync('marsScape.txt').toString()
   stdout.write('Welcome to Mars Control\n');
@@ -27,13 +27,10 @@ function interactivePrompt() {
 
 
   // put a listener on data
-  stdin.on('data', function(data) {
+  stdin.on('data', (data) => {
     data = data.toString().trim();
-
-    Command.parseCommand(data, true); // we pass true here cos it's interactive
-
+    Command.parse(data, true); // we pass true here cos it's interactive
     stdout.write('> ');
-
   })
 
 };
@@ -43,9 +40,7 @@ function interactivePrompt() {
 function processFile(filename) {
   try {
     commands = fs.readFileSync(filename, 'utf8').toString().split('\n');
-    commands.forEach(function(command) {
-      Command.parseCommand(command);
-    });
+    commands.forEach(command => Command.parse(command));
   } catch (error) {
     console.error(error);
   }

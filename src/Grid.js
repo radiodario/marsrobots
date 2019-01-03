@@ -1,24 +1,23 @@
-/* 
+/*
 * A GRID!
 *
 * you can call it like this:
 *
 *    var Grids = require('./src/Grid');
 *    var mars = Grids.Grid(maxX, maxY);
-*    
+*
 */
 
-exports.Grid = function(maxX, maxY) {
+const Grid = (width, height) => {
   // make sure there's an error thrown if you ask
   // for a planet that's too big
-  if ((maxX > 50) || (maxY > 50))
+  if ((height > 50) || (width > 50))
     throw new Error("Sorry sir, we can only simulate planets of 50x50")
 
-  // scents contains a bunch of positions where 
+  // scents contains a bunch of positions where
   var scents = [];
 
-
-  var grid = {};
+  var grid = { height, width, scents };
 
   grid.lostHere = function(x, y, bearing) {
     var currentPos = x + ',' + y + ',' + bearing;
@@ -35,21 +34,21 @@ exports.Grid = function(maxX, maxY) {
     // edge cases
     if (x < 0)
       return false
-    if (x > maxX)
+    if (x > width)
       return false
     if (y < 0)
       return false
-    if (y > maxY)
+    if (y > height)
       return false
 
     // normal checks
     switch (bearing) {
       case 'N':
-        return (y < maxY);
+        return (y < height);
       case 'S':
         return (y > 0);
       case 'E':
-        return (x < maxX);
+        return (x < width);
       case 'W':
         return (x > 0);
       default:
@@ -61,3 +60,5 @@ exports.Grid = function(maxX, maxY) {
   return grid;
 
 };
+
+module.exports = Grid

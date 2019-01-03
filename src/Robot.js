@@ -1,49 +1,45 @@
-/* 
+/*
 * ROBOT.
 *
 *  This module lets you make robots like so:
 *
 *    var Robots = require('./src/Robot');
-*    
+*
 *    var MisterGutsy = Robots.Robot(grid, startX, startY, initialBearing);
-*    
+*
 *    MisterGutsy.processInstructions(instructionString).position();
-*    
-*/ 
+*
+*/
 
 // pass args as options would be nicer
-exports.Robot = function(grid, startX, startY, initialBearing) {
+const Robot = (grid, x = 0, y = 0, initialBearing = 'N') => {
 
   // private stuff, defaults
-  var x = (startX > 0) ? startX : 0;
-  var y = (startY > 0) ? startY : 0;
-  var grid = grid;
-  var bearing = (initialBearing) || 'N';
-  var lost = false;
-
+  let lost = false;
+  let bearing = initialBearing;
   // the robot
-  var robot = {};
-    
+  let robot = {};
+
   // parse the instructions string
   //   "parse"
   robot.processInstructions = function(instructions) {
-    
-    if (instructions.length > 100) 
+
+    if (instructions.length > 100)
       throw new Error("Max instruction length exceeded (100/" + instructions.length +")");
-    
+
     var list = instructions.split('')
 
     list.forEach(function(instruction) {
 
-      if (instruction === 'F') 
+      if (instruction === 'F')
         return robot.moveForward();
-      if (instruction === 'L') 
+      if (instruction === 'L')
         return robot.turnLeft();
-      if (instruction === 'R') 
+      if (instruction === 'R')
         return robot.turnRight();
-    
+
       // wrong instruction
-      throw new Error("I didn't understand your instruction " + instruction, list); 
+      throw new Error("I didn't understand your instruction " + instruction, list);
 
     });
 
@@ -81,7 +77,7 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
 
       return true;
 
-    } else { 
+    } else {
       // we couldn't move
       // so we're lost
       lost = true;
@@ -138,10 +134,10 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
   // a nice object with the pos.
   robot.position = function() {
     return  {
-      x : x,
-      y : y,
-      bearing : bearing,
-      lost : lost
+      x,
+      y,
+      bearing,
+      lost,
     };
   };
 
@@ -149,6 +145,4 @@ exports.Robot = function(grid, startX, startY, initialBearing) {
 
 };
 
-
-
-
+module.exports = Robot
