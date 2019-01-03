@@ -110,10 +110,10 @@ const emp = ' '
 const lst = '╳';
 
 const dirs = {
-  N: '↑',
-  S: '↓',
-  E: '→',
-  W: '←',
+  N: '▲',
+  S: '▼',
+  E: '▶︎',
+  W: '◀︎',
 }
 
 const drawWorld = () => {
@@ -186,6 +186,7 @@ const drawWorld = () => {
     console.log(world)
     return;
   }
+
   let pos = robot.position();
   console.log(`{x:${pos.x}, y:${pos.y}}`)
 

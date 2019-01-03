@@ -15,18 +15,20 @@ const Grid = (maxX, maxY) => {
     throw new Error("Sorry sir, we can only simulate planets of 50x50")
 
   // scents contains a bunch of positions where
-  var scents = [];
+  let scents = [];
 
-  var grid = { maxY, maxX, scents };
+  let grid = { maxY, maxX, scents };
 
   grid.lostHere = function(x, y, bearing) {
-    var currentPos = x + ',' + y + ',' + bearing;
-    // assume we have indexOf
-    return scents.indexOf(currentPos) >= 0
+    const i = x + maxX * y
+
+    return scents[i] ? scents[i][bearing] : false
   };
 
   grid.addScent = function(x, y, bearing) {
-    scents.push(x + ',' + y + ',' + bearing);
+    const i = x + maxX * y
+
+    scents[i] ? scents[i][bearing] = true : scents[i] = { [bearing] : true }
   };
 
   grid.canMove = function(x, y, bearing) {
